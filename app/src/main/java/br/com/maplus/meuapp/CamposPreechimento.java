@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,21 @@ public class CamposPreechimento extends AppCompatActivity {
         btn_continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CamposPreechimento.this, Dados.class));
+                Intent intent = new Intent(CamposPreechimento.this, Dados.class);
+                intent.putExtra("nome", "" + editTextNome.getText());
+                intent.putExtra("email", "" + editTextEmail.getText());
+                intent.putExtra("idade", "" + editTextIdade.getText());
+                if (radioButtonAndroid.isChecked()) {
+                    intent.putExtra("sistemaOperacional", ""+radioButtonWindowsPhone.getText());
+                }
+                if (radioButtonIOS.isChecked()) {
+                    intent.putExtra("sistemaOperacional", ""+radioButtonIOS.getText());
+                }
+                if (radioButtonWindowsPhone.isChecked()) {
+                    intent.putExtra("sistemaOperacional", ""+radioButtonWindowsPhone.getText());
+                }
+
+                startActivity(intent);
             }
         });
     }
