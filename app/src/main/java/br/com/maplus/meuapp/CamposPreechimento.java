@@ -6,14 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CamposPreechimento extends AppCompatActivity {
 
     EditText editTextNome, editTextEmail, editTextTelefone, editTextIdade;
     RadioButton radioButtonAndroid, radioButtonIOS, radioButtonWindowsPhone;
+    Spinner spinnerEstado;
     Button btn_continuar;
 
     @Override
@@ -30,7 +36,19 @@ public class CamposPreechimento extends AppCompatActivity {
         radioButtonIOS = findViewById(R.id.IOS);
         radioButtonWindowsPhone = findViewById(R.id.WindowsPhone);
 
+        spinnerEstado = findViewById(R.id.spinner);
+
         btn_continuar = findViewById(R.id.button2);
+
+        radioButtonAndroid.setChecked(true);
+
+        ArrayList<String> estados = new ArrayList<>();
+        estados.add("Rio Grande do Sul");
+        estados.add("Santa Catarina");
+        estados.add("Paraná");
+        estados.add("São Paulo");
+
+        InitialSpinners(spinnerEstado, estados);
 
         btn_continuar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +67,26 @@ public class CamposPreechimento extends AppCompatActivity {
                     intent.putExtra("sistemaOperacional", ""+radioButtonWindowsPhone.getText());
                 }
 
+                intent.putExtra("estado", ""+spinnerEstado.getSelectedItem().toString());
+
                 startActivity(intent);
             }
         });
     }
+    private void InitialSpinners(Spinner spinner, ArrayList<String> arrayList){
+        final List<String> list = new ArrayList<String>();
+
+        try {
+            list.addAll(arrayList);
+        }
+        catch (Exception e){
+            list.add("Vazio");
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    } //ID spinner and List of items
 }
